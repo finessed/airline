@@ -1,8 +1,11 @@
 #!/bin/sh -e
 
 # Edit the following to change the name of the database user that will be created:
-APP_DB_USER=writer
+APP_DB_USER=admin
 APP_DB_PASS=7KLtXWr1ww4x1WhccjEo
+
+APP_APIW_USER=apiwriter
+APP_APIW_PASS=WAZGh2YHwK6GUTMFTky
 
 # Edit the following to change the name of the database that is created (defaults to the user name)
 APP_DB_NAME=airline
@@ -32,9 +35,10 @@ print_db_usage () {
   echo ""
   echo "Env variable for application development:"
   echo "  DATABASE_URL=postgresql://$APP_DB_USER:$APP_DB_PASS@localhost:15432/$APP_DB_NAME"
+  echo "  DATABASE_URL=postgresql://$APP_APIW_USER:$APP_APIW_PASS@localhost:15432/$APP_DB_NAME"
   echo ""
   echo "Local command to access the database via psql:"
-  echo "  PGUSER=$APP_DB_USER PGPASSWORD=$APP_DB_PASS psql -h localhost -p 15432 $APP_DB_NAME"
+  echo "  PGUSER=$APP_APIW_USER PGPASSWORD=$APP_APIW_PASS psql -h localhost -p 15432 $APP_DB_NAME"
 }
 
 export DEBIAN_FRONTEND=noninteractive
@@ -81,9 +85,11 @@ service postgresql restart
 cat << EOF | su - postgres -c psql
 -- Create the database user:
 CREATE USER $APP_DB_USER WITH PASSWORD '$APP_DB_PASS';
+CREATE USER $APP_APIW_USER WITH PASSWORD '$APP_APIW_PASS';
 
 -- Create the database:
 CREATE DATABASE $APP_DB_NAME WITH OWNER $APP_DB_USER;
+GRANT INSERT ON ALL TABLES IN SCHEMA $APP_DB_NAME TO $APP_APIW_USER;
 EOF
 
 # Tag the provision time:
