@@ -4,12 +4,14 @@
 
 
 ; TODO - could use a better RNG or a better seed!
-(def rnd (Random.))
+(def std-rnd (Random.))
 
-(defn ^String new-pnr []
-  "Generate a new PNR number using standard
-   Java RNG initialized by system clock."
-   (.toUpperCase
-    (Integer/toString  
-      (.nextInt rnd) 36)))
-    ;TODO avoid negative (.nextInt rnd Integer/MAX_VALUE) 36))
+(defn ^String new-pnr 
+  "Generate a new 6-digit alpha-numeric PNR number."
+   ([] (new-pnr std-rnd))
+   ([^Random rnd]
+    (->>
+      (take 6 (repeatedly #(.nextInt rnd 36)))
+      (map #(Integer/toString % 36))
+      (apply str)
+      (.toUpperCase))))
