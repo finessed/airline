@@ -1,4 +1,4 @@
-(defproject airline.pnr "0.1.1"
+(defproject airline.pnr "0.2.0"
   :description "Generate unique PNR numbers."
   :url "https://github.com/devstopfix/airline/airline.pnr"
   :license {:name "Eclipse Public License"
