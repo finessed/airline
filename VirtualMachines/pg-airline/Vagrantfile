@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# TODO move to GEM
+#def gen_passwords()
+  # Return a list of 4x 128bit passwords
+#  page = open('https://www.grc.com/passwords.htm', {"User-Agent" => "http://superuser.com/a/15391/7056"}) {|io| io.read }
+#  return Digest::SHA512.hexdigest(page).scan(/\w{32}/)
+#end
+
+
+$script = <<SCRIPT
+echo I am provisioning...
+date > /etc/vagrant_provisioned_at
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.provision "shell", inline: $script
+  config.vm.provision "file", source: "../../DBA/create_airline_tables.sql", destination: "create_tables.sql"
+end
+
+Vagrant::Config.run do |config|
+  config.vm.box = "ubuntu-trusty-64-sep"
+  ##config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+
+  config.vm.share_folder "bootstrap", "/mnt/bootstrap", ".", :create => true
+  config.vm.provision :shell, :path => "Vagrant-setup/bootstrap.sh"
+  
+  # PostgreSQL Server port forwarding
+  config.vm.forward_port 5432, 15432
+end
