@@ -51,6 +51,14 @@ id,2014-10-09,AAL,SK1228,2014-10-09T06:25:00+01:00,CPH,2014-10-09T07:10:00+01:00
 id,2014-10-10,AAL,SK1228,2014-10-10T06:25:00+01:00,CPH,2014-10-10T07:10:00+01:00
 ```
 
+* A 63-bit identifier to be used as a surrogate key
+* Day of flight
+* Departure Airport or City IATA code
+* Flight number
+* Scheduled Departure date-time
+* Destination IATA
+* Scheduled Arrival date-time
+
 ## Build
 
 ```
@@ -60,8 +68,10 @@ lein uberjar
 
 ## Usage
 
+Generate 90 days of sample data, zipped:
+
 ```
-java -jar target/airline.data.flights-0.1.0-standalone.jar \
+java -jar target/airline.data.flights-0.2.0-standalone.jar \
     airports.dat \
     StarAlliance200905.csv \
     2014-10-04 \
