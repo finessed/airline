@@ -15,9 +15,10 @@ CREATE TABLE Flight (
   Scheduled_Departure TIMESTAMPTZ NOT NULL,
   Arrival_Location    CHAR(3)     NOT NULL,
   Scheduled_Arrival   TIMESTAMPTZ NOT NULL,
-  UNIQUE (Departure_Date, Departure_Location, Flight_code),
-  CONSTRAINT DEPART_BEFORE_ARRIVE CHECK (Scheduled_Departure < Scheduled_Arrival )
+  UNIQUE (Departure_Date, Departure_Location, Flight_code)
 );
+
+--  CONSTRAINT DEPART_BEFORE_ARRIVE CHECK (Scheduled_Departure < Scheduled_Arrival )
 
 GRANT USAGE ON SCHEMA public TO admin;
 GRANT USAGE ON SCHEMA public TO clerk;
@@ -25,4 +26,4 @@ GRANT USAGE ON SCHEMA public TO clerk;
 GRANT SELECT,INSERT ON ALL TABLES IN SCHEMA public TO admin;
 GRANT SELECT,INSERT ON ALL TABLES IN SCHEMA public TO clerk;
 
-COPY Flight FROM '/home/vagrant/flights.csv' CSV;
+COPY Flight FROM '/mnt/bootstrap/flights.csv' CSV;
