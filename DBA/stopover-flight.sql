@@ -1,0 +1,9 @@
+--
+-- Find a route of two flights with
+-- a stopover (overnight) in a given city.
+--
+-- Input:
+--
+--   three airports
+--   stopover date
+--
