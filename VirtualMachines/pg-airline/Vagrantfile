@@ -17,7 +17,9 @@ SCRIPT
 Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: $script
   config.vm.provision "file", source: "../../DBA/create_airline_tables.sql", destination: "create_tables.sql"
+  config.vm.provision "file", source: "../../Datasets/flights-2014-10-05.csv", destination: "flights.csv"
 end
+
 
 Vagrant::Config.run do |config|
   config.vm.box = "ubuntu-trusty-64-sep"

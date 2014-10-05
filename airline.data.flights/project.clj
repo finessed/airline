@@ -1,4 +1,4 @@
-(defproject airline.data.flights "0.4.0"
+(defproject airline.data.flights "0.4.1"
   :description "Generate a dataset of flights from an airlines timetable."
   :url "https://github.com/devstopfix/airline/airline.data.flights"
   :license {:name "Eclipse Public License"

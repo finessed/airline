@@ -34,9 +34,9 @@
   "Convert Dates to Strings ready for output."
   (let [[day dept flight scheduled dest arrive] row]
     [(f/unparse-local-date day-fmt day)
-     dept
      flight
-     (f/unparse iso-dt-fmt scheduled)
+     dept
+     (to-iso-dt scheduled)
      dest
      (to-iso-dt arrive)]))
 
@@ -90,8 +90,15 @@
      dest
      (arrival-time day arrive (get airports dest))]))
 
+(defn arrive-after-depart? [row ]
+  (let [[_ _ _ leave _ arrive] row]
+    (if (t/after? arrive leave)
+      true
+      (do
+        (print-err (str "Arrives before depart:" row))
+        false))))
 
-(defn filter-days-of-week [date-seq dow]
+  (defn filter-days-of-week [date-seq dow]
   "Filter a sequence of dates by their day-of-week.
    dow must respond to contains? (e.g. a Set) and
    be a set of days where Monday is 1 and Sunday is 7."
@@ -134,6 +141,7 @@
         (expand-row date-range)
         (remove dup/duplicate?)
         (map (partial flight-details airports))
+        (filter arrive-after-depart?)
         (map prepare-str)
         (map (partial prepend-ids next-id))
         (write-rows out)))))

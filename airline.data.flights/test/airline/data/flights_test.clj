@@ -50,7 +50,7 @@
 (deftest test-critical-path
   (let [sw (StringWriter.)]
     (is
-      (= (fields "2014-10-04,LHR,NZ1,2014-10-04T16:15:00Z,AKL,2014-10-06T05:25:00+12:00\n")
+      (= (fields "2014-10-04,NZ1,LHR,2014-10-04T16:15:00Z,AKL,2014-10-06T05:25:00+12:00\n")
         (do
           (convert-rows
             (StringReader. "\nLHR,AKL,11422,16:15,05:25+2,NZ,1,744,Daily")
@@ -71,7 +71,7 @@
 (deftest test-timezones
   (let [sw (StringWriter.)]
     (is
-      (= (fields "2014-10-05,YEG,AC8484,2014-10-05T13:25:00-06:00,YXE,2014-10-05T14:23:00-06:00\n")
+      (= (fields "2014-10-05,AC8484,YEG,2014-10-05T13:25:00-06:00,YXE,2014-10-05T14:23:00-06:00\n")
         (do
           (convert-rows
             (StringReader. "\nYEG,YXE,298,13:25,14:23,AC,8484,CRJ,Daily,0,,")

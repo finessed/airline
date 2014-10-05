@@ -8,17 +8,23 @@ CREATE TABLE PNRNum (
 
 
 CREATE TABLE Flight (
-  Flight_ID           BIGINT      PRIMARY KEY,
-  Departure_Date      DATE        NOT NULL,
-  Departure_Location  CHAR(3)     NOT NULL,
-  Flight_Code         VARCHAR(7)  NOT NULL,
-  Scheduled_Departure TIMESTAMPTZ NOT NULL,
-  Arrival_Location    CHAR(3)     NOT NULL,
-  Scheduled_Arrival   TIMESTAMPTZ NOT NULL,
-  UNIQUE (Departure_Date, Departure_Location, Flight_code)
+  flight_id           BIGINT      PRIMARY KEY,
+  flight_date         DATE        NOT NULL,
+  flight_code         VARCHAR(7)  NOT NULL,
+  depart              CHAR(3)     NOT NULL,
+  depart_at           TIMESTAMPTZ NOT NULL,
+  destination         CHAR(3)     NOT NULL,
+  arrive_at           TIMESTAMPTZ NOT NULL,
+
+  UNIQUE (flight_date, depart, flight_code),
+  CONSTRAINT DEPART_BEFORE_ARRIVE CHECK (depart_at < arrive_at),
+  CONSTRAINT NO_LOOPS CHECK (depart <> destination)
 );
 
---  CONSTRAINT DEPART_BEFORE_ARRIVE CHECK (Scheduled_Departure < Scheduled_Arrival )
+CREATE INDEX ON Flight (destination);
+
+
+--  
 
 GRANT USAGE ON SCHEMA public TO admin;
 GRANT USAGE ON SCHEMA public TO clerk;
