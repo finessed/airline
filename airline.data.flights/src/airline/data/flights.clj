@@ -178,6 +178,6 @@
         in
         (arg-start-date start-date)
         (arg-days days)
-        (ap/airport-to-tz airports))
+        (ap/iata-to-tz airports))
       (fail
         (format "Input file not found '%s'" in)))))

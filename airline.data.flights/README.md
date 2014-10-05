@@ -28,21 +28,7 @@ on the key combination of [day source-airport flight]
 
 ### Airports Input File
 
-[Open Flights](http://openflights.org/data.html) have a database of nearly 7,000 
-airports. Please donate if you use their data.
-
-Input format:
-
-```
-_,_,_,_,IATA,_,_,_,_TZ
-609,"Kastrup","Copenhagen","Denmark","CPH","EKCH",55.617917,12.655972,17,1,"E"
-```
-
-Therefore København airport ```CPH``` is one hour ahead of UTC.
-
-```clojure
-{ 'CPH' 1.0 }
-```
+There is a map of IATA codes to timezones at [Timezone map files](http://www.fresse.org/dateutils/tzmaps.html).
 
 ## Output
 
@@ -67,6 +53,7 @@ id,2014-10-10,AAL,SK1228,2014-10-10T06:25:00+01:00,CPH,2014-10-10T07:10:00+01:00
 ```
 git clone ...
 lein uberjar
+wget https://raw.github.com/hroptatyr/dateutils/tzmaps/iata.tzmap
 ```
 
 ## Usage
@@ -74,8 +61,8 @@ lein uberjar
 Generate 90 days of sample data, zipped:
 
 ```
-java -jar target/airline.data.flights-0.3.0-standalone.jar \
-    airports.dat \
+java -jar target/airline.data.flights-0.4.0-standalone.jar \
+    iata.tzmap \
     StarAlliance200905.csv \
     2014-10-04 \
     90 | gzip -c > /tmp/flights-2014-10-04.csv.zip
@@ -83,15 +70,11 @@ java -jar target/airline.data.flights-0.3.0-standalone.jar \
 
 Four parameters are required:
 
-1. airport data csv file
+1. iata.tzmap file
 2. schedule data csv file
 3. date of first flight in format ````yyyy-mm-dd````
 4. number of days of data to generate (e.g. 90)
 
-# Notes
-
-1. The library generates departure and arrival times in the correct 
-time-zones of the airports, but ignores daylight saving adjustments.
 
 # Libraries used
 
