@@ -7,9 +7,15 @@
 ; data with English descriptions (e.g. Autumn only)
 ; which cannot be simply understood by this library.
 
+; Estimate from 2013
+;   - http://www.garfors.com/2014/06/100000-flights-day.html
+(def number-of-commercial-flights-per-day 99726)
+
 
 (def flight-cache "Keep a list of recently seen flight keys"
-  (atom (cache/fifo-cache-factory {} :threshold 1000)))
+  (atom
+    (cache/lru-cache-factory {}
+      :threshold number-of-commercial-flights-per-day)))
 
 (defn duplicate? [row]
   (let [[airport _ _ _ flight day] row

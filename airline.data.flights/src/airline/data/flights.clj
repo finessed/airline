@@ -132,7 +132,7 @@
       (->> line
         (extract-row)
         (expand-row date-range)
-        (filter (comp not dup/duplicate?))
+        (remove dup/duplicate?)
         (map (partial flight-details airports))
         (map prepare-str)
         (map (partial prepend-ids next-id))
