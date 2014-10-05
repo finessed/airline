@@ -58,3 +58,13 @@
             {"LHR" (t/time-zone-for-offset 0)
              "AKL" (t/time-zone-for-offset 12)})
           (drop 1 (fields (.toString sw))))))))
+
+
+(deftest test-filter-duplicates
+  (testing "We ignore duplicate flight data in our source"
+    (is (= ["AAL,CPH,148,17:35,18:20,SK,1218,CR9,6,0,N,\"Above 5/10 - 5/20\""]
+          (filter-duplicates
+            ["AAL,CPH,148,17:35,18:20,SK,1218,CR9,6,0,N,\"Above 5/10 - 5/20\""
+             "AAL,CPH,148,17:35,18:20,SK,1218,CR9,6,0,N,\"Above 5/24 - 5/31\""])))))
+
+

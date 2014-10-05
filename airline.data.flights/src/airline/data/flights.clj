@@ -3,6 +3,7 @@
   (:use [clojure-csv.core :only [parse-csv write-csv]])
   (:require [airline.dow :as dow]
             [airline.data.airports :as ap]
+            [airline.data.duplicates :as dup]
             [clj-time.core :as t]
             [clj-time.format :as f]
             [devstopfix.auid :as auid])
@@ -121,6 +122,7 @@
        days])))
 
 (defn prepend-ids [next-id row]
+  "Prepend a surrogate key for the row."
   (cons (format "%d" (next-id)) row))
 
 (defn convert-rows [in ^Writer out date-range airports]
@@ -130,6 +132,7 @@
       (->> line
         (extract-row)
         (expand-row date-range)
+        (filter (comp not dup/duplicate?))
         (map (partial flight-details airports))
         (map prepare-str)
         (map (partial prepend-ids next-id))

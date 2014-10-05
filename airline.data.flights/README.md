@@ -22,10 +22,13 @@ Notes:
 * the ```Arrive``` field may have a ```+1``` suffix to indicate next day
 * a header row is assumed and skipped
 * column names are not important
+* the schedule may have duplicate rows with free-text descriptions used to 
+differentiate them. These duplicates are excluded from the output based
+on the key combination of [day source-airport flight]
 
 ### Airports Input File
 
-[Open Flights](http://openflights.org/data.html) have a database of ~7,000 
+[Open Flights](http://openflights.org/data.html) have a database of nearly 7,000 
 airports. Please donate if you use their data.
 
 Input format:
@@ -38,7 +41,7 @@ _,_,_,_,IATA,_,_,_,_TZ
 Therefore København airport ```CPH``` is one hour ahead of UTC.
 
 ```clojure
-{ 'CPH' 1 }
+{ 'CPH' 1.0 }
 ```
 
 ## Output
@@ -71,7 +74,7 @@ lein uberjar
 Generate 90 days of sample data, zipped:
 
 ```
-java -jar target/airline.data.flights-0.2.0-standalone.jar \
+java -jar target/airline.data.flights-0.3.0-standalone.jar \
     airports.dat \
     StarAlliance200905.csv \
     2014-10-04 \
@@ -94,7 +97,6 @@ time-zones of the airports, but ignores daylight saving adjustments.
 
 1. CSV reading by [clojure-csv](https://github.com/davidsantiago/clojure-csv)
 2. [airline.dow](https://github.com/devstopfix/airline/tree/master/airline.dow)
-
 
 # License
 
