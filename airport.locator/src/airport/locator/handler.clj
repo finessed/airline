@@ -4,7 +4,9 @@
             [compojure.handler :as handler]
             [compojure.route :as route]
             [ring.util.response :as res])
-  (:use     [ring.middleware.json :only [wrap-json-response]]))
+  (:use     [ring.middleware.json :only [wrap-json-response]]
+            [ring.adapter.jetty :only [run-jetty]])
+  (:gen-class))
 
 (def resource-description
 "URL structure:\n
@@ -37,8 +39,16 @@ where XXX are valid IATA-3 airport codes.\n")
           (format "max-age=%d"
             (get ages (get response :status  60))))))))
 
-(def app
+(defn app []
   (->
     (handler/site app-routes)
     (cache-directive)
     (wrap-json-response)))
+
+; http://stackoverflow.com/a/4778618/3366
+
+(defn start-server [port]
+  (run-jetty (app) {:port port :join? false}))
+
+(defn -main [port & args]
+  (start-server (Integer/parseInt port)))

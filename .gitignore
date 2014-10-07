@@ -12,3 +12,4 @@ pom.xml.asc
 NOTES.md
 /Datasets/
 flights.csv
+.vagrant

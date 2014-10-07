@@ -3,13 +3,19 @@
 A [RESTful micro-service](http://martinfowler.com/articles/microservices.html) of
 airport locations around the globe.
 
-## Running
+## Build
+
+Build:
+
+    lein uberjar
+
+## Run
 
 To start a web server for the application, run:
 
-    lein ring server
-    
-To do: instructions for deploying to Jetty.
+    java -jar airport.locator-0.3.2-standalone.jar
+
+To do - the port is currently hard-coded to 8080.
 
 # Resources provided
 
