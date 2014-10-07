@@ -11,6 +11,8 @@
 # JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java
 # script /etc/environment
 
+# sudo service nginx stop
+# sudo unlink /etc/nginx/sites-enabled/default
 # sudo service nginx start
 
 # java -jar airport.locator.jar 8064
@@ -24,6 +26,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "file", \
     source: "../../airport.locator/target/airport.locator-0.3.2-standalone.jar", \
     destination: "airport.locator.jar"
+
+  config.vm.provision "file", \
+    source: "airport.conf", \
+    destination: "/etc/nginx/sites-enabled/airport.conf"
 
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
