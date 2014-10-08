@@ -1,6 +1,7 @@
 #!/bin/sh -e
 
 SMOKE_TEST_URL="http://localhost/airport/LHR"
+PORT=8065
 
 SRC="/vagrant"
 
@@ -22,19 +23,22 @@ apt-get -y install varnish
 
 echo "Start micro-service"
 
-java -jar "/home/vagrant/airport.locator.jar" 8065 &
+java -jar "/home/vagrant/airport.locator.jar" $PORT &
 
 echo "Configure Nginx"
 
 service nginx stop
-unlink /etc/nginx/sites-enabled/default
-cp "$SRC/airport.conf" /etc/nginx/sites-enabled/airport.conf
+if [ -f /etc/nginx/sites-enabled/default ]
+  then
+  unlink /etc/nginx/sites-enabled/default
+fi;
+cp "$SRC/nginx/airport.conf" /etc/nginx/sites-enabled/airport.conf
 service nginx start
 
 echo "Configure Varnish"
 
 service varnish stop
-cp "$SRC/varnish.vcl" /etc/varnish/default.vcl
+cp "$SRC/varnish/geo.vcl" /etc/varnish/default.vcl
 service varnish start
 
 
@@ -43,6 +47,7 @@ echo "Finished."
 echo ""
 
 echo "Smoke test:"
+sleep 4
 curl --silent "$SMOKE_TEST_URL"
 echo ""
 curl --write-out "%{http_code}\n" --silent --output /dev/nul "$SMOKE_TEST_URL"

@@ -20,18 +20,18 @@ where XXX are valid IATA-3 airport codes.\n")
     400))
 
 (defroutes app-routes
-  (GET ["/airport/:code" :code srvc/re-iata-3] [code]
+  (GET ["/geo/airport/:code" :code srvc/re-iata-3] [code]
     (srvc/airport-location code))
-  (GET ["/route/:stops" :stops #"[A-Z]{3}(,[A-Z]{3})+"] [stops]
+  (GET ["/geo/route/:stops" :stops #"[A-Z]{3}(,[A-Z]{3})+"] [stops]
     (srvc/airport-route stops))
   (ANY "*" [] bad-request))
 
 ; TODO extract this into a library
 (defn- cache-directive [handler]
   (let [ages {200 (* 60 60 24)
-              400 (* 60 60 24 365)
-              404 (* 60  6)
-              410 (* 60 60 24 365)}]
+              400 (* 60 60 24)
+              404 (* 60  6) ; TODO check HTTP cache rules for 4xx errors
+              410 (* 60 60 24)}]
   (fn [request]
     (let [response (handler request)]
         (res/header response
@@ -39,16 +39,14 @@ where XXX are valid IATA-3 airport codes.\n")
           (format "max-age=%d"
             (get ages (get response :status  60))))))))
 
-(defn app []
+(def app
   (->
     (handler/site app-routes)
     (cache-directive)
     (wrap-json-response)))
 
-; http://stackoverflow.com/a/4778618/3366
-
 (defn start-server [port]
-  (run-jetty (app) {:port port :join? false}))
+  (run-jetty app {:port port :join? false}))
 
 (defn -main [port & args]
   (start-server (Integer/parseInt port)))

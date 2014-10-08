@@ -1,0 +1,11 @@
+#!/bin/bash
+
+lein clean
+lein test
+
+if [ $? -eq 0 ]; then
+  lein install
+  lein uberjar;
+  openssl sha1 target/*.jar >> target/digests.txt
+  s3cmd --acl-public --rr put target/*.jar target/digest.txt "$S3_PUBLIC_DEVSTOPFIX_BUCKET/jars/"
+fi

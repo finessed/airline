@@ -11,11 +11,9 @@ Build:
 
 ## Run
 
-To start a web server for the application, run:
+To start a web server on port 8080 for the application, run:
 
-    java -jar airport.locator-0.3.2-standalone.jar
-
-To do - the port is currently hard-coded to 8080.
+    java -jar airport.locator-0.4.1-standalone.jar 8080
 
 # Resources provided
 
@@ -26,13 +24,13 @@ This section describes the URL syntax of each resource.
 Find the latitude and longitude of an airport.
 
 ```
-GET /airport/XXX
+GET /geo/airport/XXX
 ```
 
 where XXX is an UPPERCASE 3-character IATA airport code. Example:
 
 ```
-GET /airport/LHR
+GET /geo/airport/LHR
 ```
 
 returns:
@@ -47,13 +45,13 @@ Find the latitude and longitude of pairs of airports along a route
 with optional connections or stop-overs.
 
 ```
-GET /route/XXX,YYY[,ZZZ]...
+GET /geo/route/XXX,YYY[,ZZZ]...
 ```
 
 Example:
 
 ```
-GET /route/LHR,CPH,BLL
+GET /geo/route/LHR,CPH,BLL
 ```
 
 returns:
