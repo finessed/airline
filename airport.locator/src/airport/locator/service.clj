@@ -20,7 +20,9 @@
 (defn airport-location [code]
   (if-let [location (get airports code)]
     (let [[latitude longitude & r] location]
-      (res/response {code [latitude longitude]}))
+      (res/response
+        {"airport" code
+         "loc" [latitude longitude]}))
     (res/not-found
       (msg-404 code))))
 
@@ -28,10 +30,11 @@
 
 (defn- route-hop [hop]
   "Convert a list of pairs into a map of airport code:location."
-  (let [[dept arrive] hop
+  (let [[dept dest] hop
         dept-loc (get airports dept)
-        arrive-loc (get airports arrive)]
-    [{dept dept-loc} {arrive arrive-loc}]))
+        dest-loc (get airports dest)]
+    [{"dept" dept "dept-loc" dept-loc}
+     {"dest" dest "dest-loc" dest-loc}]))
 
 (defn- route-hops [route]
   (->>

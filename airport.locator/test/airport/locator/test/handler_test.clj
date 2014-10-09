@@ -11,7 +11,8 @@
       (is (= (get-in response [:headers "Content-Type"]) "application/json; charset=utf-8"))
       (is (.contains (get-in response [:headers "Cache-Control"]) "max-age="))
       (is (= (json/parse-string (:body response))
-            {"LHR" [51.477500 -0.461389]})))
+            {"airport" "LHR"
+             "loc"     [51.477500 -0.461389]}))))
 
   (testing "unknown airport has nice error message"
     (let [response (app (mock/request :get "/geo/airport/NIN"))]
@@ -35,8 +36,8 @@
       (is (.contains (get-in response [:headers "Cache-Control"]) "max-age="))
       (is (= (json/parse-string (:body response))
         {"route" [
-          [{"LHR" [51.477500 -0.461389]} {"CPH" [55.617917 12.655972]}]
-          [{"CPH" [55.617917 12.655972]} {"BLL" [55.740322 9.151778]}]]}))))
+          [{"dept" "LHR" "dept-loc" [51.477500 -0.461389]} {"dest" "CPH" "dest-loc" [55.617917 12.655972]}]
+          [{"dept" "CPH" "dept-loc" [55.617917 12.655972]} {"dest" "BLL" "dest-loc" [55.740322  9.151778]}]]}))))
 
   (testing "routes need more than one airport"
     (let [response (app (mock/request :get "/geo/route/LHR"))]
@@ -58,4 +59,4 @@
 
   (testing "any other route is bad"
     (let [response (app (mock/request :get "/geo/oops"))]
-      (is (= (:status response) 400))))))
+      (is (= (:status response) 400)))))

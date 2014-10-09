@@ -16,10 +16,7 @@ apt-get -y upgrade
 
 echo "Installing packages"
 
-apt-get -y install default-jre
-apt-get -y install nginx
-apt-get -y install varnish
-
+apt-get -y install default-jre nginx varnish
 
 echo "Start micro-service"
 

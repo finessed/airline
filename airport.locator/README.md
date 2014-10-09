@@ -11,9 +11,9 @@ Build:
 
 ## Run
 
-To start a web server on port 8080 for the application, run:
+To start a web server on port 8065 for the application, run:
 
-    java -jar airport.locator-0.4.1-standalone.jar 8080
+    java -jar airport.locator-0.5.0-standalone.jar 8065
 
 # Resources provided
 
@@ -36,13 +36,14 @@ GET /geo/airport/LHR
 returns:
 
 ```json
-{"LHR":[51.4775,-0.461389]}
+{"airport":"LHR",
+ "loc":[51.4775,-0.461389]}
 ```
 
 ## Airport routes
 
 Find the latitude and longitude of pairs of airports along a route
-with optional connections or stop-overs.
+with optional connections or stop-overs. Maximum of 16 airport codes.
 
 ```
 GET /geo/route/XXX,YYY[,ZZZ]...
@@ -58,8 +59,8 @@ returns:
 
 ```json
 {"route":[
-    [{"LHR":[51.4775,-0.461389]},{"CPH":[55.617917,12.655972]}],
-    [{"CPH":[55.617917,12.655972]},{"BLL":[55.740322,9.151778]}]
+    [{"dept": "LHR", "dept-loc":[51.4775,-0.461389]},{"dest": "CPH", "dest-loc":[55.617917,12.655972]}],
+    [{"dept": "CPH", "dept-loc":[55.617917,12.655972]},{"dest": "BLL", "dest-loc":[55.740322,9.151778]}]
     ]}
 ```
 

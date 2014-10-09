@@ -27,6 +27,7 @@ where XXX are valid IATA-3 airport codes.\n")
   (ANY "*" [] bad-request))
 
 ; TODO extract this into a library
+; TODO if the response already has Cache-Control or Expires, do nothing!
 (defn- cache-directive [handler]
   (let [ages {200 (* 60 60 24)
               400 (* 60 60 24)
