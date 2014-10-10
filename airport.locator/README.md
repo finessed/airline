@@ -1,7 +1,7 @@
 # airport.locator
 
 A [RESTful micro-service](http://martinfowler.com/articles/microservices.html) of
-airport locations around the globe.
+airport locations around the globe. Supports JSONP.
 
 ## Build
 
@@ -13,7 +13,7 @@ Build:
 
 To start a web server on port 8065 for the application, run:
 
-    java -jar airport.locator-0.5.0-standalone.jar 8065
+    java -jar airport.locator-0.6.0-standalone.jar 8065
 
 # Resources provided
 
