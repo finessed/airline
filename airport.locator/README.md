@@ -13,7 +13,7 @@ Build:
 
 To start a web server on port 8065 for the application, run:
 
-    java -jar airport.locator-0.6.0-standalone.jar 8065
+    java -jar airport.locator-0.6.2-standalone.jar 8065
 
 # Resources provided
 
