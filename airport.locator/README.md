@@ -13,7 +13,7 @@ Build:
 
 To start a web server on port 8065 for the application, run:
 
-    java -jar airport.locator-0.6.2-standalone.jar 8065
+    java -jar airport.locator-0.7.0-standalone.jar 8065
 
 # Resources provided
 
@@ -37,10 +37,28 @@ returns:
 
 ```json
 {"airport":"LHR",
- "loc":[51.4775,-0.461389]}
+ "location":[51.4775,-0.461389]}
 ```
 
-## Airport routes
+## Airport destinations
+
+Get a list of all the airports that are destinations for a given airport.
+
+```
+GET /geo/airport/BLL/destinations
+```
+
+returns:
+
+```json
+{ "airport":"BLL",
+  "location":[55.740322,9.151778],
+  "destinations":[
+    {"airport":"FRA","location":[50.026421,8.543125]},
+    {"airport":"MUC","location":[48.353783,11.786086]}] }
+```
+
+## Flight routes
 
 Find the latitude and longitude of pairs of airports along a route
 with optional connections or stop-overs. Maximum of 16 airport codes.

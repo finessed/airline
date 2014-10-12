@@ -1,4 +1,4 @@
-(defproject airport.locator "0.6.2"
+(defproject airport.locator "0.7.0"
   :description "A RESTful micro-service for locating airports."
   :url "https://github.com/devstopfix/airline/airport.locator"
   :min-lein-version "2.0.0"

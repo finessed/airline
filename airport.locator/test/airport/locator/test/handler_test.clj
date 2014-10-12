@@ -21,7 +21,7 @@
       (is (has-max-age-cache-control response))
       (is (= (json/parse-string (:body response))
             {"airport" "LHR"
-             "loc" [51.477500 -0.461389]}))))
+             "location" [51.477500 -0.461389]}))))
 
   (testing "unknown airport has nice error message"
     (let [response (app (mock/request :get "/geo/airport/NIN"))]
@@ -90,4 +90,17 @@
                (second
                  (clojure.string/split body #"[/(/)]")))
             {"airport" "LHR"
-             "loc" [51.477500 -0.461389]})))))
+             "location" [51.477500 -0.461389]})))))
+
+(deftest test-destinations
+  (testing "airport"
+    (let [response (app (mock/request :get "/geo/airport/BLL/destinations"))]
+      (is (= (:status response) 200))
+      (is (= (get-in response [:headers "Content-Type"]) "application/json; charset=utf-8"))
+      (is (has-max-age-cache-control response))
+      (is (= (json/parse-string (:body response))
+            {"airport" "BLL",
+             "location" [55.740322 9.151778],
+             "destinations"
+             [{"airport" "FRA", "location" [50.026421 8.543125]}
+              {"airport" "MUC", "location" [48.353783 11.786086]}]})))))

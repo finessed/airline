@@ -18,3 +18,21 @@
     (clojure.java.io/resource "org/openflights/airport-locations.csv")
     (read-airports)
     (reduce conj (sorted-map))))
+
+
+
+(defn- read-airport-destinations [in]
+  "Each row of dataset is a list of airports,
+   the key is the first column, the rest is
+   the destinations flown to from the key."
+  (with-open [rdr (clojure.java.io/reader in)]
+    (doall
+      (parse-csv rdr))))
+
+(defn airport-destinations []
+  "Return a map of airport-code:(destination-airport-codes...)"
+  (->>
+    (clojure.java.io/resource "airline/route-maps.csv")
+    (read-airport-destinations)
+    (map #(vector (first %) (rest %)))
+    (reduce conj (sorted-map))))

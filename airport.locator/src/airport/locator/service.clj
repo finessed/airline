@@ -10,19 +10,22 @@
 (def re-iata-3 #"[A-Z]{3}")
 
 ; Map of airport code to Vector of Latitude, Longtitude.
-(def airports (data/airport-locations))
+(def map-airport-locations (data/airport-locations))
 
 (defn- msg-404 [code]
   (format "Not found: IATA-3 code '%s'\n" code))
 
 ; Airports
 
-(defn airport-location [code]
-  (if-let [location (get airports code)]
+(defn- location-of-airport [airport]
+  (when-let [location (get map-airport-locations airport)]
     (let [[latitude longitude & r] location]
-      (res/response
-        {"airport" code
-         "loc" [latitude longitude]}))
+        {"airport" airport
+        "location" [latitude longitude]})))
+
+(defn airport-location [code]
+  (if-let [result (location-of-airport code)]
+    (res/response result)
     (res/not-found
       (msg-404 code))))
 
@@ -31,8 +34,8 @@
 (defn- route-hop [hop]
   "Convert a list of pairs into a map of airport code:location."
   (let [[dept dest] hop
-        dept-loc (get airports dept)
-        dest-loc (get airports dest)]
+        dept-loc (get map-airport-locations dept)
+        dest-loc (get map-airport-locations dest)]
     [{"dept" dept "dept-loc" dept-loc}
      {"dest" dest "dest-loc" dest-loc}]))
 
@@ -45,10 +48,23 @@
 (defn- unknown-location? [route]
   "Find first airport code for which we don't have a location"
   (first
-    (remove #(contains? airports %) route)))
+    (remove #(contains? map-airport-locations %) route)))
 
 (defn airport-route [^String route]
   (let [route (take 16 (.split route ","))]
     (if-let [code (unknown-location? route)]
       (res/not-found (msg-404 code))
       (res/response (route-hops route)))))
+
+; Destinations
+
+(def airport-destinations-map (data/airport-destinations))
+
+(defn airport-destinations [depart]
+  (if-let [destinations (get airport-destinations-map depart)]
+    (->
+      (location-of-airport depart)
+      (assoc :destinations (map location-of-airport destinations))
+      (res/response))
+    (res/not-found
+      (msg-404 depart))))

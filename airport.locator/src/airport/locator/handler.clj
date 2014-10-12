@@ -20,6 +20,8 @@
 (defroutes app-routes
   (GET ["/geo/airport/:code" :code srvc/re-iata-3] [code]
     (srvc/airport-location code))
+  (GET ["/geo/airport/:code/destinations" :code srvc/re-iata-3] [code]
+    (srvc/airport-destinations code))
   (GET ["/geo/route/:stops" :stops #"[A-Z]{3}(,[A-Z]{3})+"] [stops]
     (srvc/airport-route stops))
   (ANY "*" [] (res/status
