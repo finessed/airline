@@ -29,12 +29,17 @@
                   (str "400 Bad Request\n" resource-description))
                 400)))
 
+(def cache-control
+  { 200 (* 60 60 24)
+    400 (* 60 60 24 30)
+    404 (* 60 60)})
+
 (def app
   (-> app-routes
     (wrap-json-response)
     (wrap-json-with-padding)
     (wrap-params)
-    (cache-control-max-age)))
+    (cache-control-max-age cache-control)))
 
 (defn start-server [port]
   (run-jetty app {:port port :join? false}))

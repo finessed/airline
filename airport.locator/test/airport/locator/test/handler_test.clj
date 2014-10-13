@@ -26,7 +26,7 @@
   (testing "unknown airport has nice error message"
     (let [response (app (mock/request :get "/geo/airport/NIN"))]
       (is (= (:status response) 404))
-      (is (has-max-age-cache-control response 360))
+      (is (has-max-age-cache-control response 3600))
       (is (.contains (:body response) "IATA-3 code 'NIN"))))
 
   (testing "lower case airport fails"
