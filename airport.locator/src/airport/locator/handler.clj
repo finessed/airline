@@ -8,7 +8,7 @@
         [ring.middleware.jsonp :only [wrap-json-with-padding]]
         [ring.middleware.params :only [wrap-params]]
         [ring.adapter.jetty :only [run-jetty]]
-        [ring.middleware.cache-control :only [cache-control-max-age]])
+        [ring.middleware.cache-control :only [cache-control-max-age-perturbed]])
   (:gen-class))
 
 (def resource-description
@@ -30,8 +30,8 @@
                 400)))
 
 (def cache-control
-  { 200 (* 60 60 24)
-    400 (* 60 60 24 30)
+  { 200 (* 60 60 24 30)
+    400 (* 60 60 24)
     404 (* 60 60)})
 
 (def app
@@ -39,7 +39,7 @@
     (wrap-json-response)
     (wrap-json-with-padding)
     (wrap-params)
-    (cache-control-max-age cache-control)))
+    (cache-control-max-age-perturbed cache-control)))
 
 (defn start-server [port]
   (run-jetty app {:port port :join? false}))

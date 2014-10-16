@@ -11,7 +11,10 @@
       (re-matches #"max-age=(\d+)" )
       (last)))
   ([response expected]
-    (= expected (Integer/parseInt (has-max-age-cache-control response)))))
+    (let [age (Integer/parseInt (has-max-age-cache-control response))]
+      (and
+        (>= age (* expected 0.6 ))
+        (<= age (* expected 1.4 ))))))
 
 (deftest test-app
   (testing "airport"
